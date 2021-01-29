@@ -1,9 +1,4 @@
 module.exports = {
-    dbConfig : {
-        dbName : '',
-        host : '',
-        userName : '',
-        password : ''
-    },
-    port: process.env.PORT || 3000,
+    mongoConnectionString: process.env.MONGO_CONNECTION_STRING,
+    port: process.env.PORT,
 }

@@ -3,12 +3,13 @@ const bodyParser = require('body-parser')
 const helmet = require('helmet')
 const cors = require('cors')
 require('dotenv').config()
+const connectDb = require("./utils/mongoDb");
 
 const routes = require('./routes')
 
 const { port } = require("./config")
 const app = express()
-
+connectDb()
 
 process.on('uncaughtException', (err) => {
     console.error('There was an uncaught error', err)

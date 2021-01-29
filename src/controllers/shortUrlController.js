@@ -17,8 +17,8 @@ router.get('/:shortUrlCode', async (req, res) => {
     var shortUrlCode = req.params.shortUrlCode;
     try {
         var data = await shortUrlLogic.getShortUrl(shortUrlCode);
-        if (data.length > 0) {
-            return res.redirect(data[0].url);
+        if (data) {
+            return res.redirect(data.url);
             //return res.status(200).json({ data });
         } else {
             return res.status(400).json({error :"The short url doesn't exists in our system."});
@@ -53,11 +53,28 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.put('/:shortUrlCode', async (req, res) => {
+    try{
+        const { shortUrlCode } = req.params;
+
+        const { newUrl } = req.body;
+
+        const data = { newUrl, shortUrlCode }
+
+        const result = await shortUrlLogic.updateUrl(data);
+
+        return res.status(200).json({ result });
+        
+    } catch (e){
+        res.status(500).json({ status : 500, error : e.toString()})
+    }
+})
+
 router.delete('/:shortUrlCode', async (req, res) => {
     var shortUrlCode = req.params.shortUrlCode;
     try {
         var data = await shortUrlLogic.getShortUrl(shortUrlCode);
-        if (data.length > 0) {
+        if (data) {
             await shortUrlLogic.deleteDetails(shortUrlCode);
             return res.status(200).json({messgage : "Data deleted succesffully..!!!"});
         } else {
