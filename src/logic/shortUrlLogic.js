@@ -1,5 +1,4 @@
 const shortid = require("shortid");
-const lodash = require("lodash");
 const Url = require("../models/url");
 
 const generate = async() => {
@@ -54,9 +53,9 @@ const deleteDetails = async(shortUrlCode) => {
 const updateUrl = async(data) => {
   try {
 
-    await Url.findOne({ urlHashCode: data.shortUrlCode });
-    return await Url.findOne({ urlHashCode: data.shortUrlCode });
-
+    var filter = { urlHashCode: data.shortUrlCode };
+    var updateData = { url : data.url, shortUrl: data.shortUrl}
+    return await Url.findOneAndUpdate(filter, updateData, {new: true});
   } catch(e) {
     throw e
   } 

@@ -57,14 +57,19 @@ router.put('/:shortUrlCode', async (req, res) => {
     try{
         const { shortUrlCode } = req.params;
 
-        const { newUrl } = req.body;
+        const { shortBaseUrl, url } = req.body;
 
-        const data = { newUrl, shortUrlCode }
+        if (validUrl.isUri(url) && validUrl.isUri(shortBaseUrl) ) {
 
-        const result = await shortUrlLogic.updateUrl(data);
+            const shortUrl = shortBaseUrl + '/' + shortUrlCode;
+            const data = { url, shortUrl, shortUrlCode };
+            const result = await shortUrlLogic.updateUrl(data);
 
-        return res.status(200).json({ result });
-        
+            return res.status(200).json({ result });
+
+        } else {
+          return res.status(400).json('Invalid Url format');
+        }
     } catch (e){
         res.status(500).json({ status : 500, error : e.toString()})
     }
